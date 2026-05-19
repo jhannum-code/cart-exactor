@@ -3,369 +3,891 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cart Extractor — Install</title>
+<title>Cart Extractor — Install · Ninja Transfers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+  /* ======================================================
+     NINJA TRANSFERS DESIGN TOKENS (inlined from components.css)
+     ====================================================== */
   :root {
-    --bg: #0e0e10;
-    --surface: #16161a;
-    --surface-2: #1c1c22;
-    --border: #2a2a33;
-    --text: #ededf0;
-    --text-dim: #8a8a95;
-    --accent: #d4ff3d;
-    --accent-dim: #6b7d1f;
-    --danger: #ff5c5c;
-    --success: #5cffaa;
-    --mono: 'JetBrains Mono', ui-monospace, monospace;
-    --serif: 'Fraunces', Georgia, serif;
+    /* Brand */
+    --nt-blue: #00C5FF;
+    --nt-blue-cta: #019AFF;
+    --nt-darkblue: #003DA6;
+    --nt-action-hover: #007AD1;
+    --nt-gradient-deep: linear-gradient(135deg, #003DA6 0%, #0D1B4F 60%, #0A1538 100%);
+
+    /* Neutrals — surfaces */
+    --nt-bg: #F1F1F1;
+    --nt-bg-sunken: #F7F7F8;
+    --nt-paper: #FFFFFF;
+    --nt-n-200: #E4E4E6;
+
+    /* Ink */
+    --nt-ink: #2B2B2B;
+    --nt-ink-muted: #5A5B60;
+    --nt-ink-soft: #717278;
+
+    /* Lines */
+    --nt-line: #E4E4E6;
+    --nt-line-strong: #CDCED1;
+
+    /* Semantic */
+    --nt-success: #21AF70;
+    --nt-success-bg: #DBF4E8;
+    --nt-warning-bg: #FEEEDC;
+    --nt-danger: #FF394C;
+    --nt-danger-bg: #FFE3E6;
+
+    /* Typography */
+    --nt-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --nt-font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --nt-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    /* Motion */
+    --nt-dur-fast: 120ms;
+    --nt-dur-base: 200ms;
+    --nt-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Elevation */
+    --nt-shadow-sm: 0 2px 8px rgba(43, 43, 43, 0.06), 0 1px 2px rgba(43, 43, 43, 0.04);
+
+    /* ============ Local aliases ============ */
+    --page-bg: var(--nt-bg);
+    --surface: var(--nt-paper);
+    --surface-sunken: var(--nt-bg-sunken);
+    --ink: var(--nt-ink);
+    --ink-muted: var(--nt-ink-muted);
+    --ink-soft: var(--nt-ink-soft);
+    --line: var(--nt-line);
+    --line-strong: var(--nt-line-strong);
+    --brand: var(--nt-blue);
+    --brand-cta: var(--nt-blue-cta);
+    --brand-deep: var(--nt-darkblue);
+    --mono: var(--nt-font-mono);
+    --textarea-bg: #FFFFFF;
+    --textarea-bg-focus: #FCFEFF;
+    --code-tint-bg: #FFFFFF;
+    --shadow-card: var(--nt-shadow-sm);
+    --field-mono-color: var(--nt-ink);
   }
+
+  /* ============ DARK MODE ============ */
+  html[data-theme="dark"] {
+    --page-bg: #0D1117;
+    --surface: #161B22;
+    --surface-sunken: #1F2630;
+    --ink: #E6EDF3;
+    --ink-muted: #9CA8B5;
+    --ink-soft: #6E7A87;
+    --line: #2A323D;
+    --line-strong: #3A4452;
+    --textarea-bg: #0D1117;
+    --textarea-bg-focus: #0F151D;
+    --code-tint-bg: #1F2630;
+    --shadow-card: 0 6px 18px rgba(0,0,0,0.45);
+    --field-mono-color: #E6EDF3;
+  }
+  html[data-theme="dark"] body { background: var(--page-bg); }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--page-bg); }
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
+    color: var(--ink);
+    font-family: var(--nt-font-body);
     min-height: 100vh;
-    padding: 32px 24px 80px;
-    background-image:
-      radial-gradient(circle at 20% 10%, rgba(212, 255, 61, 0.04) 0%, transparent 40%),
-      radial-gradient(circle at 80% 80%, rgba(212, 255, 61, 0.03) 0%, transparent 40%);
-  }
-  .container { max-width: 920px; margin: 0 auto; }
-
-  header { border-bottom: 1px solid var(--border); padding-bottom: 28px; margin-bottom: 36px; }
-  h1 {
-    font-family: var(--serif);
-    font-weight: 800;
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    letter-spacing: -0.03em;
-    line-height: 0.95;
-  }
-  h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .subtitle {
-    margin-top: 12px;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    line-height: 1.7;
-    max-width: 640px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h2 {
-    font-family: var(--serif);
-    font-size: 1.6rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
+  /* ======================================================
+     HERO — deep-blue band, bold brand chrome
+     ====================================================== */
+  .hero {
+    background: var(--nt-gradient-deep);
+    color: #fff;
+    padding: 28px 24px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 88% 110%, rgba(0,197,255,0.35) 0%, transparent 45%),
+      radial-gradient(circle at 12% -20%, rgba(0,197,255,0.18) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero__inner { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; }
+  .hero__topbar {
     display: flex;
-    align-items: baseline;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 56px;
+    gap: 16px;
+  }
+  .hero__topbar-right {
+    display: flex;
+    align-items: center;
     gap: 12px;
   }
-  h2 .num {
-    font-style: italic;
-    color: var(--accent);
-    font-size: 1.2rem;
+  .hero__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--nt-font-display);
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    text-decoration: none;
+  }
+  .hero__logo svg { width: 24px; height: 24px; flex-shrink: 0; }
+
+  /* Theme toggle */
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .theme-toggle__opt {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; height: 30px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    transition: background var(--nt-dur-base) var(--nt-ease), color var(--nt-dur-base) var(--nt-ease);
+  }
+  .theme-toggle__opt:hover { color: #fff; }
+  .theme-toggle__opt.is-active {
+    background: rgba(255,255,255,0.16);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22);
+  }
+  .theme-toggle__opt svg { width: 14px; height: 14px; display: block; }
+  .hero__chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .hero__chip::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 8px var(--brand);
   }
 
-  section { margin-bottom: 44px; }
-
-  .panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
+  .hero__eyebrow {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: var(--nt-font-display);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.031em;
+    color: #fff;
+    max-width: 14ch;
+  }
+  .hero h1 .accent { color: var(--brand); }
+  .hero__lead {
+    margin-top: 22px;
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.78);
+    max-width: 58ch;
+  }
+  .hero__lead code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: rgba(0,197,255,0.16);
+    color: var(--brand);
+    padding: 2px 8px;
     border-radius: 4px;
-    padding: 22px;
+    border: 1px solid rgba(0,197,255,0.28);
   }
 
-  .bookmarklet-row {
+  /* ======================================================
+     MAIN LAYOUT — sections lifted up over the hero
+     ====================================================== */
+  main {
+    max-width: 960px;
+    margin: -32px auto 0;
+    padding: 0 24px 96px;
+    position: relative;
+    z-index: 2;
+  }
+
+  section { margin-bottom: 28px; }
+  section:last-of-type { margin-bottom: 0; }
+
+  .section-head {
     display: flex;
     align-items: center;
     gap: 16px;
-    flex-wrap: wrap;
-    padding: 18px;
-    background: var(--surface-2);
-    border: 1px dashed var(--accent-dim);
-    border-radius: 4px;
+    margin-bottom: 18px;
+  }
+  .section-num {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--brand-cta);
+    color: #fff;
+    display: grid; place-items: center;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 6px 18px rgba(1,154,255,0.28);
+    flex-shrink: 0;
+  }
+  .section-num--deep {
+    background: var(--ink);
+    color: var(--surface);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  }
+  .section-head h2 {
+    font-family: var(--nt-font-display);
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .section-head__lead {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    margin-top: 4px;
   }
 
+  /* card / panel */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .panel__body { padding: 24px; }
+
+  /* ======================================================
+     SECTION 01 — Install bookmarklet
+     ====================================================== */
+  .install-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: 24px;
+    background: #FFFFFF;
+    border: 1.5px dashed rgba(1,154,255,0.45);
+    border-radius: 14px;
+    color: var(--nt-ink);
+  }
+  .install-row .install-hint { color: var(--nt-ink-muted); }
+  .install-row .install-hint strong { color: var(--nt-ink); }
+  .install-row .install-hint code {
+    background: var(--nt-bg-sunken);
+    border-color: var(--nt-line);
+  }
   .bookmarklet {
-    display: inline-block;
-    background: var(--accent);
-    color: var(--bg);
-    padding: 12px 22px;
-    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--brand-cta);
+    color: #fff;
+    padding: 16px 26px;
+    border-radius: 12px;
     text-decoration: none;
-    font-family: var(--mono);
+    font-family: var(--nt-font-body);
     font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.02em;
+    font-size: 15px;
+    letter-spacing: 0;
     cursor: grab;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: background var(--nt-dur-base) var(--nt-ease),
+                box-shadow var(--nt-dur-base) var(--nt-ease),
+                transform var(--nt-dur-fast) var(--nt-ease);
     user-select: none;
-    border: 2px solid var(--accent);
+    box-shadow: 0 8px 22px rgba(1,154,255,0.32), inset 0 -2px 0 rgba(0,0,0,0.08);
+    border: none;
+    white-space: nowrap;
   }
   .bookmarklet:hover {
+    background: var(--nt-action-hover);
+    box-shadow: 0 12px 28px rgba(1,154,255,0.38), inset 0 -2px 0 rgba(0,0,0,0.1);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(212, 255, 61, 0.25);
   }
-  .bookmarklet:active { cursor: grabbing; }
-
-  .bookmarklet-hint {
-    font-size: 0.75rem;
-    color: var(--text-dim);
-    line-height: 1.6;
-    flex: 1;
-    min-width: 240px;
+  .bookmarklet:active { cursor: grabbing; transform: translateY(0); }
+  .bookmarklet__shuriken {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
   }
-  .bookmarklet-hint strong { color: var(--accent); font-weight: 500; }
-
-  ol.steps { padding-left: 0; list-style: none; counter-reset: step; }
-  ol.steps > li {
-    counter-increment: step;
-    padding: 14px 0 14px 56px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    font-size: 0.85rem;
-    line-height: 1.7;
-    color: var(--text);
-  }
-  ol.steps > li::before {
-    content: counter(step, decimal-leading-zero);
-    position: absolute;
-    left: 0;
-    top: 14px;
-    font-family: var(--serif);
-    font-size: 1.6rem;
-    font-style: italic;
-    font-weight: 600;
-    color: var(--accent);
-    line-height: 1;
-  }
-  ol.steps > li:last-child { border-bottom: none; }
-  ol.steps code, p code {
-    background: var(--surface-2);
+  .bookmarklet__drag-hint {
+    display: inline-flex;
+    margin-left: 6px;
     padding: 2px 7px;
-    border-radius: 2px;
-    color: var(--accent);
-    font-size: 0.78rem;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.18);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
+
+  .install-hint {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+  .install-hint strong { color: var(--ink); font-weight: 700; }
+  .install-hint code {
+    font-family: var(--mono);
+    background: var(--surface-sunken);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.86em;
+    color: var(--brand-cta);
+  }
+
+  /* manual code block (fallback "copy the URL" path) */
+  .alt-install {
+    margin-top: 18px;
+    padding: 16px 18px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--brand);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+  .alt-install strong { color: var(--ink); font-weight: 700; }
+  .alt-install code {
+    font-family: var(--mono);
+    background: var(--code-tint-bg);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.92em;
+    color: var(--brand-cta);
+  }
+  .alt-install__actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
 
   .code-block {
-    background: #0a0a0c;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 16px;
-    font-size: 0.72rem;
-    color: var(--text-dim);
+    margin-top: 12px;
+    background: #0D1B4F;
+    color: #B8EFFF;
+    border: 1px solid #1d2a6b;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.55;
     overflow-x: auto;
     white-space: pre-wrap;
     word-break: break-all;
-    line-height: 1.6;
-    max-height: 240px;
+    max-height: 220px;
     overflow-y: auto;
-    font-family: var(--mono);
+    display: none;
   }
+  .code-block::-webkit-scrollbar { width: 8px; height: 8px; }
+  .code-block::-webkit-scrollbar-thumb { background: #1d2a6b; border-radius: 4px; }
 
+  /* utility buttons */
   .btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 8px 14px;
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.15s;
-    margin-top: 10px;
-  }
-  .btn:hover { color: var(--accent); border-color: var(--accent); }
-  .btn.copied { color: var(--success); border-color: var(--success); }
-
-  .callout {
-    background: var(--surface-2);
-    border-left: 3px solid var(--accent);
-    padding: 14px 18px;
-    margin: 16px 0;
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    line-height: 1.7;
-    border-radius: 2px;
-  }
-  .callout strong { color: var(--text); }
-
-  .fallback-panel {
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    padding: 8px 14px;
+    font-family: var(--nt-font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all var(--nt-dur-base) var(--nt-ease);
+    line-height: 1.2;
+  }
+  .btn:hover { border-color: var(--brand-cta); color: var(--brand-cta); }
+  .btn.copied { color: #fff; border-color: var(--nt-success); background: var(--nt-success); }
+
+  .btn--primary {
+    background: var(--brand-cta);
+    color: #fff;
+    border-color: var(--brand-cta);
+  }
+  .btn--primary:hover { background: var(--nt-action-hover); border-color: var(--nt-action-hover); color: #fff; }
+
+  /* ======================================================
+     SECTION 02 — Steps
+     ====================================================== */
+  ol.steps { list-style: none; counter-reset: step; padding: 0; }
+  ol.steps > li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  ol.steps > li:last-child { border-bottom: none; }
+  ol.steps > li::before {
+    content: counter(step, decimal-leading-zero);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--surface-sunken);
+    border: 1.5px solid var(--brand-cta);
+    color: var(--brand-cta);
+    display: grid; place-items: center;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  ol.steps code, p code {
+    font-family: var(--mono);
+    background: var(--surface-sunken);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
     border-radius: 4px;
+    color: var(--brand-cta);
+    font-size: 0.85em;
+  }
+  ol.steps strong { font-weight: 700; }
+
+  .under-hood {
+    margin-top: 16px;
+    padding: 16px 18px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--ink);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+  .under-hood strong { color: var(--ink); font-weight: 700; }
+  .under-hood code {
+    font-family: var(--mono);
+    background: var(--code-tint-bg);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--brand-cta);
+    font-size: 0.92em;
+  }
+
+  /* ======================================================
+     SECTION 03 — Manual fallback
+     ====================================================== */
+  .fallback {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
     overflow: hidden;
   }
-  .fallback-header {
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface-2);
+  .fallback__head {
+    padding: 14px 20px;
+    background: var(--surface-sunken);
+    border-bottom: 1px solid var(--line);
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .fallback-title {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--text-dim);
-  }
-  .fallback-title::before { content: '◆'; color: var(--accent); margin-right: 8px; }
-
-  textarea {
-    width: 100%;
-    min-height: 240px;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    padding: 16px;
-    resize: vertical;
-    line-height: 1.6;
-    outline: none;
-  }
-  textarea::placeholder { color: var(--text-dim); opacity: 0.6; }
-
-  .controls { display: flex; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--border); background: var(--surface-2); flex-wrap: wrap; justify-content: flex-end; }
-  .btn-primary {
-    background: var(--accent);
-    color: var(--bg);
-    border: 1px solid var(--accent);
-    padding: 7px 14px;
-    font-family: var(--mono);
-    font-size: 0.7rem;
+  .fallback__title {
+    font-size: 12px;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-weight: 700;
-    cursor: pointer;
-    border-radius: 2px;
+    color: var(--ink-muted);
+    display: flex; align-items: center; gap: 8px;
   }
-  .btn-primary:hover { background: #b8e030; }
+  .fallback__title::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    background: var(--brand-cta);
+  }
+  .fallback__count {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  textarea#jsonInput {
+    width: 100%;
+    min-height: 220px;
+    background: var(--textarea-bg);
+    border: none;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 18px 20px;
+    resize: vertical;
+    line-height: 1.55;
+    outline: none;
+    display: block;
+  }
+  textarea#jsonInput::placeholder { color: var(--ink-soft); }
+  textarea#jsonInput:focus { background: var(--textarea-bg-focus); }
+  .controls {
+    display: flex;
+    gap: 8px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--line);
+    background: var(--surface-sunken);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
 
-  #fallback-results { padding: 0; min-height: 0; }
-  .fallback-results.has-items { border-top: 1px solid var(--border); }
-  .item-card { border-bottom: 1px solid var(--border); }
+  /* results */
+  #fallback-results { padding: 0; }
+  .fallback-results.has-items { border-top: 1px solid var(--line); }
+  .item-card { border-bottom: 1px solid var(--line); background: var(--surface); }
   .item-card:last-child { border-bottom: none; }
   .item-head {
-    padding: 10px 18px;
-    background: var(--surface-2);
+    padding: 12px 20px;
+    background: var(--surface-sunken);
     display: flex;
     gap: 12px;
     align-items: center;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--line);
   }
-  .item-num { font-family: var(--serif); font-size: 1.2rem; font-style: italic; color: var(--accent); font-weight: 600; }
-  .item-title { flex: 1; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--brand-cta);
+    color: #fff;
+    display: grid; place-items: center;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .item-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
   .item-status {
-    font-size: 0.62rem;
+    font-size: 11px;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 2px 7px;
-    border-radius: 2px;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--nt-n-200);
+    color: var(--ink-muted);
   }
-  .item-status.success { color: var(--success); border-color: var(--success); }
-  .item-status.partial { color: var(--accent); border-color: var(--accent-dim); }
-  .item-status.fail { color: var(--danger); border-color: var(--danger); }
+  .item-status.success { background: var(--nt-success-bg); color: #0e5a3a; }
+  .item-status.partial { background: var(--nt-warning-bg); color: #7a3a00; }
+  .item-status.fail    { background: var(--nt-danger-bg);  color: #8a0d1d; }
+
   .field {
-    padding: 10px 18px;
+    padding: 12px 20px;
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 12px;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.78rem;
+    grid-template-columns: 220px 1fr;
+    gap: 18px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    align-items: start;
   }
   .item-card .field:last-child { border-bottom: none; }
-  .field-label { color: var(--text-dim); text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.1em; padding-top: 2px; line-height: 1.4; }
-  .field-value { word-break: break-all; }
-  .field-value.empty { color: var(--danger); font-style: italic; opacity: 0.7; }
-  .field-value.url a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent-dim); }
+  .field-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .field-label > div { word-break: break-word; }
+  .copy-btn {
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    color: var(--ink-muted);
+    padding: 4px 10px;
+    font-family: var(--nt-font-body);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all var(--nt-dur-base) var(--nt-ease);
+  }
+  .copy-btn:hover { color: var(--brand-cta); border-color: var(--brand-cta); }
+  .copy-btn.copied { color: #fff; background: var(--nt-success); border-color: var(--nt-success); }
 
+  .field-value {
+    word-break: break-all;
+    line-height: 1.55;
+    color: var(--field-mono-color);
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+  .field-value.empty {
+    color: var(--nt-danger);
+    font-style: italic;
+    opacity: 0.85;
+    font-family: var(--nt-font-body);
+  }
+  .field-value.url a {
+    color: var(--brand-cta);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(1,154,255,0.35);
+  }
+  .field-value.url a:hover { border-bottom-color: var(--brand-cta); }
+  .field-value__row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .field-value__row .copy-btn { font-family: var(--nt-font-body); }
+
+  /* ======================================================
+     FOOTER
+     ====================================================== */
   .footer-note {
-    margin-top: 48px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    font-size: 0.7rem;
-    color: var(--text-dim);
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-soft);
     line-height: 1.7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-note code {
+    font-family: var(--mono);
+    background: var(--code-tint-bg);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--brand-cta);
+    font-size: 0.92em;
+  }
+  .footer-note__internal {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--line);
+    color: var(--ink-muted);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Status pill dark-mode overrides */
+  html[data-theme="dark"] .item-status { background: rgba(255,255,255,0.06); color: var(--ink-muted); }
+  html[data-theme="dark"] .item-status.success { background: rgba(33,175,112,0.16); color: #6EE2A9; }
+  html[data-theme="dark"] .item-status.partial { background: rgba(242,119,8,0.16);  color: #FFB36B; }
+  html[data-theme="dark"] .item-status.fail    { background: rgba(255,57,76,0.16);  color: #FF7A87; }
+
+  /* err-banner contrast in dark */
+  html[data-theme="dark"] .err-banner { background: rgba(255,57,76,0.12); color: #FF7A87; }
+  html[data-theme="dark"] .err-banner strong { color: #FFA8B0; }
+  .err-banner {
+    padding: 14px 20px;
+    background: var(--nt-danger-bg);
+    color: #8a0d1d;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .err-banner strong { color: #6a0a16; font-weight: 800; }
+
+  @media (max-width: 720px) {
+    .install-row { grid-template-columns: 1fr; }
+    .field { grid-template-columns: 1fr; gap: 6px; }
   }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <header>
-    <h1>Cart <em>Extractor</em></h1>
-    <p class="subtitle">A one-click bookmarklet that reads the active Shopify cart on <code style="background:var(--surface-2);padding:2px 6px;border-radius:2px;color:var(--accent);font-size:0.78rem;">ninjatransfers.com</code> and overlays a floating panel showing Upload URL, Width, Height, and Quantity for every line item.</p>
-  </header>
+<!-- ======================================================
+     HERO BAND
+     ====================================================== -->
+<header class="hero">
+  <div class="hero__inner">
+    <div class="hero__topbar">
+      <a class="hero__logo" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2 L13.5 9.5 L21 9 L15 13 L19 20 L12 16 L5 20 L9 13 L3 9 L10.5 9.5 Z" fill="#fff" stroke="rgba(0,197,255,0.6)" stroke-width="0.5" stroke-linejoin="round"/>
+          <circle cx="12" cy="12.5" r="1.8" fill="var(--brand)"/>
+        </svg>
+        Ninja Transfers
+      </a>
+      <div class="hero__topbar-right">
+        <div class="theme-toggle" role="group" aria-label="Theme">
+          <button class="theme-toggle__opt is-active" data-theme-value="light" aria-label="Light mode" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+          <button class="theme-toggle__opt" data-theme-value="dark" aria-label="Dark mode" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+        </div>
+        <span class="hero__chip">Internal Tool</span>
+      </div>
+    </div>
+    <div class="hero__eyebrow">Cart Extract · Bookmarklet</div>
+    <h1>Pull cart artwork in <span class="accent">one click.</span></h1>
+    <p class="hero__lead">
+      A one-click bookmarklet that reads the active Shopify cart on
+      <code>ninjatransfers.com</code> and overlays a floating panel with the
+      Upload URL, Width, Height, and Quantity for every line item.
+    </p>
+  </div>
+</header>
 
+<main>
+
+  <!-- =================================================
+       01 — Install the bookmarklet
+       ================================================= -->
   <section>
-    <h2><span class="num">01</span> Install the bookmarklet</h2>
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div>
+        <h2>Install the bookmarklet</h2>
+        <div class="section-head__lead">Drag the button below into your bookmarks bar — that's it.</div>
+      </div>
+    </div>
+
     <div class="panel">
-      <div class="bookmarklet-row">
-        <a class="bookmarklet" id="bookmarkletLink" href="#" onclick="return false;">🥷 Extract Cart</a>
-        <div class="bookmarklet-hint">
-          <strong>Drag</strong> the green button above into your browser's <strong>bookmarks bar</strong>.
-          (If the bar is hidden: <code>⌘/Ctrl + Shift + B</code> to show it.)
-          Right-clicking the button → "Bookmark this link" also works in most browsers.
+      <div class="panel__body">
+        <div class="install-row">
+          <a class="bookmarklet" id="bookmarkletLink" href="#" onclick="return false;">
+            <svg class="bookmarklet__shuriken" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2 L13.5 9.5 L21 9 L15 13 L19 20 L12 16 L5 20 L9 13 L3 9 L10.5 9.5 Z" fill="#fff" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" stroke-linejoin="round"/>
+              <circle cx="12" cy="12.5" r="1.6" fill="var(--brand-cta)"/>
+            </svg>
+            Extract Cart
+            <span class="bookmarklet__drag-hint">Drag me</span>
+          </a>
+          <div class="install-hint">
+            <strong>Drag</strong> the blue button into your browser's <strong>bookmarks bar</strong>.
+            If the bar is hidden, press <code>⌘ / Ctrl + Shift + B</code> to show it.
+            Right-click → <em>Bookmark this link</em> also works in most browsers.
+          </div>
+        </div>
+
+        <div class="alt-install">
+          <strong>Can't drag?</strong> Some browsers block <code>javascript:</code> links from being dragged. Create any new bookmark, edit it, and paste the code below into the URL field. Name it <strong>Extract Cart</strong>.
+          <div class="alt-install__actions">
+            <button class="btn btn--primary" id="copyCodeBtn">Copy bookmarklet code</button>
+            <button class="btn" id="showCodeBtn">Show code</button>
+          </div>
+          <pre class="code-block" id="codeBlock"></pre>
         </div>
       </div>
-      <div class="callout">
-        <strong>Can't drag?</strong> Some browsers block dragging javascript: links. In that case: create any new bookmark, then edit it and paste the code below into the URL field. Name it <code>Extract Cart</code>.
-        <button class="btn" id="copyCodeBtn" style="margin-top: 12px;">Copy bookmarklet code</button>
-        <div class="code-block" id="codeBlock" style="margin-top:12px;display:none;"></div>
-      </div>
     </div>
   </section>
 
+  <!-- =================================================
+       02 — Use it on a cart page
+       ================================================= -->
   <section>
-    <h2><span class="num">02</span> Use it on a cart page</h2>
-    <ol class="steps">
-      <li>Open the customer's cart-share link (the <code>/a/cart?cart-token=...</code> URL) in your browser. This loads their cart into your session.</li>
-      <li>Once the cart page is showing, click the <strong>🥷 Extract Cart</strong> bookmark in your bookmarks bar.</li>
-      <li>A floating panel slides in from the right with each line item's upload URL, width, height, and quantity. Click <strong>Copy CSV</strong> to grab all rows, or copy individual fields.</li>
-      <li>Press <code>Esc</code> or click <strong>×</strong> to close the panel.</li>
-    </ol>
-    <div class="callout">
-      <strong>What it does under the hood:</strong> Fetches <code>/cart.js</code> from the current ninjatransfers.com session (so the cookies authenticate the request), parses the JSON, walks every line item's <code>properties</code> looking for <code>_Upload (Vector Files Preferred)</code>, <code>width</code>, <code>height</code>, and <code>qty</code> (with fuzzy key matching), and renders the results inline. No data leaves the browser.
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div>
+        <h2>Use it on a cart page</h2>
+        <div class="section-head__lead">Run it from any ninjatransfers.com cart-share URL.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <ol class="steps">
+        <li><div>Open the customer's cart-share link (the <code>/a/cart?cart-token=…</code> URL) in your browser. This loads their cart into your session.</div></li>
+        <li><div>Once the cart page is showing, click the <strong>Extract Cart</strong> bookmark in your bookmarks bar.</div></li>
+        <li><div>A floating panel slides in from the right with each line item's upload URL, width, height, and quantity. Click <strong>Copy CSV</strong> to grab all rows, or copy individual fields.</div></li>
+        <li><div>Press <code>Esc</code> or click <strong>×</strong> to close the panel.</div></li>
+      </ol>
+    </div>
+
+    <div class="under-hood">
+      <strong>What it does under the hood:</strong> Fetches <code>/cart.js</code> from the current ninjatransfers.com session (cookies authenticate the request), parses the JSON, walks every line item's <code>properties</code> looking for <code>_Upload (Vector Files Preferred)</code>, <code>width</code>, <code>height</code>, and <code>qty</code> (with fuzzy key matching), and renders the results inline. No data leaves the browser.
     </div>
   </section>
 
+  <!-- =================================================
+       03 — Manual fallback
+       ================================================= -->
   <section>
-    <h2><span class="num">03</span> Manual fallback</h2>
-    <p class="subtitle" style="margin-bottom: 18px;">If you already have JSON in hand (from a support ticket, a copy of <code>/cart.js</code>, etc.), paste it below to run the same extraction without the bookmarklet.</p>
-    <div class="fallback-panel">
-      <div class="fallback-header">
-        <span class="fallback-title">Paste cart JSON</span>
-        <span class="fallback-title" id="charCount">0 chars</span>
+    <div class="section-head">
+      <div class="section-num section-num--deep">03</div>
+      <div>
+        <h2>Manual fallback</h2>
+        <div class="section-head__lead">Already have cart JSON? Paste it to run the same extraction without the bookmarklet.</div>
       </div>
-      <textarea id="jsonInput" placeholder='Paste Shopify cart JSON here — or anything containing line items with properties like _Upload (Vector Files Preferred), width, height, qty...'></textarea>
+    </div>
+
+    <div class="fallback">
+      <div class="fallback__head">
+        <span class="fallback__title">Paste cart JSON</span>
+        <span class="fallback__count" id="charCount">0 chars</span>
+      </div>
+      <textarea id="jsonInput" placeholder='Paste Shopify cart JSON here — or anything containing line items with properties like _Upload (Vector Files Preferred), width, height, qty…'></textarea>
       <div class="controls">
-        <button class="btn" id="sampleBtn">Load Sample</button>
+        <button class="btn" id="sampleBtn">Load sample</button>
         <button class="btn" id="clearBtn">Clear</button>
-        <button class="btn" id="copyAllBtn">Copy All (CSV)</button>
-        <button class="btn-primary" id="extractBtn">Extract →</button>
+        <button class="btn" id="copyAllBtn">Copy all (CSV)</button>
+        <button class="btn btn--primary" id="extractBtn">Extract →</button>
       </div>
       <div class="fallback-results" id="fallback-results"></div>
     </div>
   </section>
 
   <div class="footer-note">
-    Bookmarklet runs entirely in your browser. It only touches <code style="background:var(--surface-2);padding:2px 6px;border-radius:2px;color:var(--accent);font-size:0.75rem;">/cart.js</code> on whatever domain you're on (so it won't work from this install page — only from an actual cart page). Internal use only.
+    <div>
+      Runs entirely in your browser. Only touches <code>/cart.js</code> on whatever domain you're on (so it won't work from this install page — only from an actual cart page).
+    </div>
+    <span class="footer-note__internal">★ Internal use only</span>
   </div>
-</div>
+
+</main>
 
 <!-- ============================================================ -->
-<!-- BOOKMARKLET SOURCE                                            -->
-<!-- This is the code that runs when the bookmarklet is clicked.   -->
-<!-- It's compiled to a single-line javascript: URL below.         -->
+<!-- BOOKMARKLET SOURCE                                           -->
 <!-- ============================================================ -->
 <script id="bookmarklet-source" type="text/plain">
 (function(){
@@ -390,7 +912,7 @@
   var P=document.createElement('div');P.id='__nt_ext_panel';
   P.innerHTML='<div id="__nt_ext_inner"></div>';
   var s=document.createElement('style');
-  s.textContent='#__nt_ext_panel{position:fixed;top:20px;right:20px;width:440px;max-height:90vh;background:#0e0e10;color:#ededf0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;border:1px solid #2a2a33;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,0.5);z-index:2147483647;overflow:hidden;display:flex;flex-direction:column}#__nt_ext_inner{overflow-y:auto;flex:1}#__nt_ext_panel *{box-sizing:border-box}#__nt_ext_panel .h{padding:12px 16px;border-bottom:1px solid #2a2a33;background:#1c1c22;display:flex;align-items:center;gap:10px}#__nt_ext_panel .h .t{flex:1;font-weight:700;color:#d4ff3d;letter-spacing:0.05em;font-size:12px;text-transform:uppercase}#__nt_ext_panel .h button{background:transparent;border:1px solid #2a2a33;color:#8a8a95;padding:4px 10px;font-family:inherit;font-size:11px;cursor:pointer;border-radius:2px;text-transform:uppercase;letter-spacing:0.05em}#__nt_ext_panel .h button:hover{color:#d4ff3d;border-color:#d4ff3d}#__nt_ext_panel .h .x{padding:2px 8px;font-size:14px}#__nt_ext_panel .s{padding:10px 16px;background:#1c1c22;border-bottom:1px solid #2a2a33;font-size:11px;color:#8a8a95}#__nt_ext_panel .s b{color:#d4ff3d;font-size:13px}#__nt_ext_panel .it{border-bottom:1px solid #2a2a33}#__nt_ext_panel .it:last-child{border-bottom:none}#__nt_ext_panel .ih{padding:8px 16px;background:#1c1c22;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2a2a33}#__nt_ext_panel .ih .n{color:#d4ff3d;font-weight:700;font-size:14px}#__nt_ext_panel .ih .ti{flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#__nt_ext_panel .ih .st{font-size:10px;padding:2px 6px;border:1px solid #2a2a33;border-radius:2px;color:#8a8a95;text-transform:uppercase;letter-spacing:0.05em}#__nt_ext_panel .ih .st.ok{color:#5cffaa;border-color:#5cffaa}#__nt_ext_panel .ih .st.pt{color:#d4ff3d;border-color:#6b7d1f}#__nt_ext_panel .ih .st.no{color:#ff5c5c;border-color:#ff5c5c}#__nt_ext_panel .f{padding:8px 16px;display:grid;grid-template-columns:130px 1fr;gap:10px;border-bottom:1px solid #2a2a33;font-size:12px}#__nt_ext_panel .it .f:last-child{border-bottom:none}#__nt_ext_panel .fl{color:#8a8a95;text-transform:uppercase;font-size:10px;letter-spacing:0.06em;padding-top:1px;line-height:1.35}#__nt_ext_panel .fv{word-break:break-all;line-height:1.5}#__nt_ext_panel .fv.em{color:#ff5c5c;font-style:italic;opacity:0.7}#__nt_ext_panel .fv a{color:#d4ff3d;text-decoration:none;border-bottom:1px dashed #6b7d1f}#__nt_ext_panel .cb{background:transparent;border:1px solid #2a2a33;color:#8a8a95;padding:2px 6px;font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;margin-top:4px;text-transform:uppercase;letter-spacing:0.05em}#__nt_ext_panel .cb:hover{color:#d4ff3d;border-color:#d4ff3d}#__nt_ext_panel .cb.cp{color:#5cffaa;border-color:#5cffaa}#__nt_ext_panel .er{padding:24px 18px;color:#ff5c5c;font-size:12px;line-height:1.6}#__nt_ext_panel .ld{padding:24px 18px;color:#8a8a95;font-size:12px}';
+  s.textContent='#__nt_ext_panel{position:fixed;top:20px;right:20px;width:460px;max-height:90vh;background:#ffffff;color:#2B2B2B;font-family:-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;font-size:14px;border:1px solid #E4E4E6;border-radius:16px;box-shadow:0 24px 60px rgba(43,43,43,0.18),0 0 0 1px rgba(255,255,255,0.6);z-index:2147483647;overflow:hidden;display:flex;flex-direction:column}#__nt_ext_inner{overflow-y:auto;flex:1}#__nt_ext_panel *{box-sizing:border-box}#__nt_ext_panel .h{padding:14px 18px;border-bottom:1px solid #E4E4E6;background:linear-gradient(135deg,#003DA6 0%,#0D1B4F 100%);color:#fff;display:flex;align-items:center;gap:10px}#__nt_ext_panel .h .t{flex:1;font-weight:800;letter-spacing:0.06em;font-size:12px;text-transform:uppercase;display:flex;align-items:center;gap:8px}#__nt_ext_panel .h .t::before{content:"";width:8px;height:8px;border-radius:50%;background:#00C5FF;box-shadow:0 0 8px #00C5FF}#__nt_ext_panel .h button{background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:5px 11px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:0.06em}#__nt_ext_panel .h button:hover{background:rgba(255,255,255,0.20);border-color:rgba(255,255,255,0.45)}#__nt_ext_panel .h .cp{background:#00C5FF;color:#0D1B4F;border-color:#00C5FF}#__nt_ext_panel .h .cp:hover{background:#7FE2FF;border-color:#7FE2FF}#__nt_ext_panel .h .x{padding:3px 9px;font-size:14px;font-weight:800}#__nt_ext_panel .s{padding:10px 18px;background:#F7F7F8;border-bottom:1px solid #E4E4E6;font-size:12px;color:#5A5B60;font-weight:600}#__nt_ext_panel .s b{color:#019AFF;font-size:14px;font-weight:800}#__nt_ext_panel .it{border-bottom:1px solid #E4E4E6}#__nt_ext_panel .it:last-child{border-bottom:none}#__nt_ext_panel .ih{padding:10px 18px;background:linear-gradient(180deg,#FBFDFF 0%,#F7F7F8 100%);display:flex;align-items:center;gap:10px;border-bottom:1px solid #E4E4E6}#__nt_ext_panel .ih .n{width:24px;height:24px;border-radius:50%;background:#2B2B2B;color:#fff;display:grid;place-items:center;font-weight:800;font-size:11px}#__nt_ext_panel .ih .ti{flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#2B2B2B}#__nt_ext_panel .ih .st{font-size:10px;padding:3px 9px;border-radius:999px;background:#E4E4E6;color:#5A5B60;text-transform:uppercase;letter-spacing:0.06em;font-weight:800}#__nt_ext_panel .ih .st.ok{background:#DBF4E8;color:#0e5a3a}#__nt_ext_panel .ih .st.pt{background:#FEEEDC;color:#7a3a00}#__nt_ext_panel .ih .st.no{background:#FFE3E6;color:#8a0d1d}#__nt_ext_panel .f{padding:10px 18px;display:grid;grid-template-columns:140px 1fr;gap:12px;border-bottom:1px solid #E4E4E6;font-size:12px;align-items:start}#__nt_ext_panel .it .f:last-child{border-bottom:none}#__nt_ext_panel .fl{color:#717278;text-transform:uppercase;font-size:10px;letter-spacing:0.08em;padding-top:2px;font-weight:800;line-height:1.4;display:flex;flex-direction:column;align-items:flex-start;gap:5px}#__nt_ext_panel .fl > div{word-break:break-word}#__nt_ext_panel .fv{word-break:break-all;line-height:1.5;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#2B2B2B}#__nt_ext_panel .fv.em{color:#FF394C;font-style:italic;opacity:0.85;font-family:inherit}#__nt_ext_panel .fv a{color:#019AFF;text-decoration:none;border-bottom:1px solid rgba(1,154,255,0.3)}#__nt_ext_panel .cb{background:#fff;border:1px solid #CDCED1;color:#5A5B60;padding:3px 8px;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;border-radius:5px;margin-top:5px;text-transform:uppercase;letter-spacing:0.06em}#__nt_ext_panel .cb:hover{color:#019AFF;border-color:#019AFF}#__nt_ext_panel .cb.cp{color:#fff;background:#21AF70;border-color:#21AF70}#__nt_ext_panel .er{padding:24px 20px;color:#8a0d1d;font-size:13px;line-height:1.6;background:#FFE3E6}#__nt_ext_panel .er b{font-weight:800}#__nt_ext_panel .ld{padding:28px 20px;color:#5A5B60;font-size:13px;font-weight:600;text-align:center}';
   document.head.appendChild(s);document.body.appendChild(P);
 
   var inner=P.querySelector('#__nt_ext_inner');
@@ -399,14 +921,14 @@
   document.addEventListener('keydown',keyHandler);
 
   function header(count,found,total){
-    return '<div class="h"><span class="t">🥷 Cart Extract</span><button class="rf">Refresh</button><button class="cp">Copy CSV</button><button class="x">×</button></div>'+
-    (count!=null?'<div class="s"><b>'+count+'</b> line item'+(count===1?'':'s')+' · '+found+'/'+total+' fields</div>':'');
+    return '<div class="h"><span class="t">Cart Extract</span><button class="rf">Refresh</button><button class="cp">Copy CSV</button><button class="x">×</button></div>'+
+    (count!=null?'<div class="s"><b>'+count+'</b> line item'+(count===1?'':'s')+' · '+found+'/'+total+' fields found</div>':'');
   }
   function bindHeader(items){
     inner.querySelector('.x').onclick=close;
     inner.querySelector('.rf').onclick=function(){render('<div class="ld">Refreshing…</div>');fetchAndRender();};
     var cp=inner.querySelector('.cp');
-    cp.onclick=function(){if(!items||!items.length)return;navigator.clipboard.writeText(toCSV(items));cp.textContent='Copied ✓';cp.classList.add('cp');setTimeout(function(){cp.textContent='Copy CSV';cp.classList.remove('cp');},1400);};
+    cp.onclick=function(){if(!items||!items.length)return;navigator.clipboard.writeText(toCSV(items));cp.textContent='Copied ✓';setTimeout(function(){cp.textContent='Copy CSV';},1400);};
   }
   function render(html){inner.innerHTML=html;}
   function renderItems(items){
@@ -431,11 +953,12 @@
     });
   }
   function fieldHTML(label,val,isUrl){
-    if(val==null||val===''){return '<div class="f"><div class="fl">'+label+'</div><div class="fv em">Not found</div></div>';}
-    var html='<div class="f"><div class="fl">'+label+'</div><div class="fv">';
+    var labelHTML='<div class="fl"><div>'+label+'</div><button class="cb" data-v="'+esc(label).replace(/"/g,'&quot;')+'">Copy label</button></div>';
+    if(val==null||val===''){return '<div class="f">'+labelHTML+'<div class="fv em">Not found</div></div>';}
+    var html='<div class="f">'+labelHTML+'<div class="fv">';
     if(isUrl&&typeof val==='string'&&/^https?:\/\//.test(val)){html+='<a href="'+esc(val)+'" target="_blank" rel="noopener">'+esc(val)+'</a>';}
     else{html+=esc(val);}
-    html+='<br><button class="cb" data-v="'+esc(val).replace(/"/g,'&quot;')+'">Copy</button>';
+    html+='<br><button class="cb" data-v="'+esc(val).replace(/"/g,'&quot;')+'">Copy value</button>';
     html+='</div></div>';
     return html;
   }
@@ -455,42 +978,73 @@
   }
 
   window.__ntCartExtractor={refresh:fetchAndRender,close:close};
-  render('<div class="ld">🥷 Fetching cart from this page…</div>');
+  render('<div class="ld">Fetching cart from this page…</div>');
   fetchAndRender();
 })();
 </script>
 
 <!-- ============================================================ -->
-<!-- INSTALL PAGE LOGIC                                            -->
-<!-- Compiles the bookmarklet source into a javascript: URL and    -->
-<!-- powers the manual paste fallback.                             -->
+<!-- INSTALL PAGE LOGIC                                           -->
 <!-- ============================================================ -->
+<script>
+// Theme toggle — persists to localStorage, respects prefers-color-scheme on first load.
+(function themeToggle(){
+  var KEY = 'nt_cart_extract_theme';
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem(KEY); } catch(e){}
+  var initial = stored || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  apply(initial);
+  document.querySelectorAll('.theme-toggle__opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var v = btn.getAttribute('data-theme-value');
+      apply(v);
+      try { localStorage.setItem(KEY, v); } catch(e){}
+    });
+  });
+  function apply(v){
+    root.setAttribute('data-theme', v);
+    document.querySelectorAll('.theme-toggle__opt').forEach(function(b){
+      var active = b.getAttribute('data-theme-value') === v;
+      b.classList.toggle('is-active', active);
+      b.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  }
+})();
+</script>
+
 <script>
 // Build the bookmarklet href from the source block.
 (function buildBookmarklet(){
   var src = document.getElementById('bookmarklet-source').textContent;
-  // Collapse whitespace while preserving string contents-ish; this is a simple safe minify
-  // (multi-line newlines → single space, then collapse runs of spaces).
   var minified = src.replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
   var href = 'javascript:' + encodeURIComponent(minified);
   document.getElementById('bookmarkletLink').setAttribute('href', href);
   document.getElementById('codeBlock').textContent = href;
 
-  document.getElementById('copyCodeBtn').addEventListener('click', function(){
-    document.getElementById('codeBlock').style.display = 'block';
+  var copyBtn = document.getElementById('copyCodeBtn');
+  var showBtn = document.getElementById('showCodeBtn');
+  var codeBlock = document.getElementById('codeBlock');
+
+  copyBtn.addEventListener('click', function(){
+    codeBlock.style.display = 'block';
     navigator.clipboard.writeText(href).then(function(){
-      var btn = document.getElementById('copyCodeBtn');
-      btn.textContent = 'Copied ✓ — now paste into a new bookmark';
-      btn.classList.add('copied');
+      copyBtn.textContent = 'Copied ✓ — now paste into a new bookmark';
+      copyBtn.classList.add('copied');
       setTimeout(function(){
-        btn.textContent = 'Copy bookmarklet code';
-        btn.classList.remove('copied');
+        copyBtn.textContent = 'Copy bookmarklet code';
+        copyBtn.classList.remove('copied');
       }, 2400);
     });
   });
+  showBtn.addEventListener('click', function(){
+    var visible = codeBlock.style.display === 'block';
+    codeBlock.style.display = visible ? 'none' : 'block';
+    showBtn.textContent = visible ? 'Show code' : 'Hide code';
+  });
 })();
 
-// =============== Manual fallback extractor (same logic) ==================
+// =============== Manual fallback extractor ==================
 var VECTOR_EXT = ['.ai','.eps','.svg','.pdf'];
 var TOKENS = { upload: ['upload','vectorfile','artwork','designfile','fileurl','assetfile','asseturl'], width: ['width'], height: ['height'], qty: ['qty','quantity'] };
 var EXACT  = { upload: ['url','file','image','imageurl','asset'], width: ['w'], height: ['h'], qty: ['count','amount','numberofunits'] };
@@ -533,18 +1087,48 @@ function renderFallback(items){
     out.appendChild(card);
   });
 }
+function makeCopyButton(text, label){
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = label;
+  btn.addEventListener('click', function(){
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = label; btn.classList.remove('copied'); }, 1400);
+    });
+  });
+  return btn;
+}
 function makeFieldRow(label, val, isUrlField){
   var row = document.createElement('div'); row.className = 'field';
-  var lab = document.createElement('div'); lab.className = 'field-label'; lab.textContent = label;
+  var lab = document.createElement('div'); lab.className = 'field-label';
+  var labText = document.createElement('div'); labText.textContent = label; lab.appendChild(labText);
+  lab.appendChild(makeCopyButton(label, 'Copy label'));
   var v = document.createElement('div');
   if(val==null || val===''){ v.className = 'field-value empty'; v.textContent = 'Not found'; }
-  else { v.className = 'field-value' + (isUrlField ? ' url' : ''); if(isUrlField && isUrl(val)) v.innerHTML = '<a href="'+esc(val)+'" target="_blank" rel="noopener">'+esc(val)+'</a>'; else v.textContent = String(val); }
+  else {
+    v.className = 'field-value' + (isUrlField ? ' url' : '');
+    if(isUrlField && isUrl(val)) v.innerHTML = '<a href="'+esc(val)+'" target="_blank" rel="noopener">'+esc(val)+'</a>';
+    else v.textContent = String(val);
+    var contentClone = document.createElement('div');
+    contentClone.innerHTML = v.innerHTML;
+    v.innerHTML = '';
+    v.appendChild(contentClone);
+    v.appendChild(makeCopyButton(String(val), 'Copy value'));
+  }
   row.appendChild(lab); row.appendChild(v); return row;
 }
 function doExtract(){
   var raw = document.getElementById('jsonInput').value.trim();
   if(!raw){ lastResults=[]; renderFallback([]); return; }
-  var data; try { data = JSON.parse(raw); } catch(err){ lastResults=[]; document.getElementById('fallback-results').innerHTML = '<div style="padding:18px;color:var(--danger);font-size:0.78rem;">Invalid JSON: '+esc(err.message)+'</div>'; document.getElementById('fallback-results').classList.add('has-items'); return; }
+  var data; try { data = JSON.parse(raw); } catch(err){
+    lastResults=[];
+    var out = document.getElementById('fallback-results');
+    out.innerHTML = '<div class="err-banner"><strong>Invalid JSON:</strong> '+esc(err.message)+'</div>';
+    out.classList.add('has-items');
+    return;
+  }
   var items = findLineItems(data).map(function(it, i){ var ex = extractItem(it); ex.title = getTitle(it, 'Item '+(i+1)); return ex; });
   lastResults = items;
   renderFallback(items);
@@ -571,7 +1155,8 @@ document.getElementById('copyAllBtn').addEventListener('click', function(){
   navigator.clipboard.writeText(toCSV(lastResults));
   var btn = document.getElementById('copyAllBtn');
   btn.textContent = 'Copied ✓';
-  setTimeout(function(){ btn.textContent = 'Copy All (CSV)'; }, 1400);
+  btn.classList.add('copied');
+  setTimeout(function(){ btn.textContent = 'Copy all (CSV)'; btn.classList.remove('copied'); }, 1400);
 });
 document.getElementById('jsonInput').addEventListener('input', function(e){ document.getElementById('charCount').textContent = e.target.value.length + ' chars'; });
 document.getElementById('jsonInput').addEventListener('keydown', function(e){ if((e.metaKey||e.ctrlKey) && e.key==='Enter'){ e.preventDefault(); doExtract(); } });
