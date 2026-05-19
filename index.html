@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart Extractor — Install</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e10;
+    --surface: #16161a;
+    --surface-2: #1c1c22;
+    --border: #2a2a33;
+    --text: #ededf0;
+    --text-dim: #8a8a95;
+    --accent: #d4ff3d;
+    --accent-dim: #6b7d1f;
+    --danger: #ff5c5c;
+    --success: #5cffaa;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --serif: 'Fraunces', Georgia, serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    padding: 32px 24px 80px;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(212, 255, 61, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(212, 255, 61, 0.03) 0%, transparent 40%);
+  }
+  .container { max-width: 920px; margin: 0 auto; }
+
+  header { border-bottom: 1px solid var(--border); padding-bottom: 28px; margin-bottom: 36px; }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 800;
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+  h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .subtitle {
+    margin-top: 12px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    max-width: 640px;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  h2 .num {
+    font-style: italic;
+    color: var(--accent);
+    font-size: 1.2rem;
+  }
+
+  section { margin-bottom: 44px; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px;
+  }
+
+  .bookmarklet-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 18px;
+    background: var(--surface-2);
+    border: 1px dashed var(--accent-dim);
+    border-radius: 4px;
+  }
+
+  .bookmarklet {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 12px 22px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    cursor: grab;
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    border: 2px solid var(--accent);
+  }
+  .bookmarklet:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(212, 255, 61, 0.25);
+  }
+  .bookmarklet:active { cursor: grabbing; }
+
+  .bookmarklet-hint {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    flex: 1;
+    min-width: 240px;
+  }
+  .bookmarklet-hint strong { color: var(--accent); font-weight: 500; }
+
+  ol.steps { padding-left: 0; list-style: none; counter-reset: step; }
+  ol.steps > li {
+    counter-increment: step;
+    padding: 14px 0 14px 56px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  ol.steps > li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+  ol.steps > li:last-child { border-bottom: none; }
+  ol.steps code, p code {
+    background: var(--surface-2);
+    padding: 2px 7px;
+    border-radius: 2px;
+    color: var(--accent);
+    font-size: 0.78rem;
+  }
+
+  .code-block {
+    background: #0a0a0c;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 1.6;
+    max-height: 240px;
+    overflow-y: auto;
+    font-family: var(--mono);
+  }
+
+  .btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    margin-top: 10px;
+  }
+  .btn:hover { color: var(--accent); border-color: var(--accent); }
+  .btn.copied { color: var(--success); border-color: var(--success); }
+
+  .callout {
+    background: var(--surface-2);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    border-radius: 2px;
+  }
+  .callout strong { color: var(--text); }
+
+  .fallback-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .fallback-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .fallback-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+  }
+  .fallback-title::before { content: '◆'; color: var(--accent); margin-right: 8px; }
+
+  textarea {
+    width: 100%;
+    min-height: 240px;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    padding: 16px;
+    resize: vertical;
+    line-height: 1.6;
+    outline: none;
+  }
+  textarea::placeholder { color: var(--text-dim); opacity: 0.6; }
+
+  .controls { display: flex; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--border); background: var(--surface-2); flex-wrap: wrap; justify-content: flex-end; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: 1px solid var(--accent);
+    padding: 7px 14px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .btn-primary:hover { background: #b8e030; }
+
+  #fallback-results { padding: 0; min-height: 0; }
+  .fallback-results.has-items { border-top: 1px solid var(--border); }
+  .item-card { border-bottom: 1px solid var(--border); }
+  .item-card:last-child { border-bottom: none; }
+  .item-head {
+    padding: 10px 18px;
+    background: var(--surface-2);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .item-num { font-family: var(--serif); font-size: 1.2rem; font-style: italic; color: var(--accent); font-weight: 600; }
+  .item-title { flex: 1; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item-status {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .item-status.success { color: var(--success); border-color: var(--success); }
+  .item-status.partial { color: var(--accent); border-color: var(--accent-dim); }
+  .item-status.fail { color: var(--danger); border-color: var(--danger); }
+  .field {
+    padding: 10px 18px;
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.78rem;
+  }
+  .item-card .field:last-child { border-bottom: none; }
+  .field-label { color: var(--text-dim); text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.1em; padding-top: 2px; }
+  .field-value { word-break: break-all; }
+  .field-value.empty { color: var(--danger); font-style: italic; opacity: 0.7; }
+  .field-value.url a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent-dim); }
+
+  .footer-note {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Cart <em>Extractor</em></h1>
+    <p class="subtitle">A one-click bookmarklet that reads the active Shopify cart on <code style="background:var(--surface-2);padding:2px 6px;border-radius:2px;color:var(--accent);font-size:0.78rem;">ninjatransfers.com</code> and overlays a floating panel showing Upload URL, Width, Height, and Quantity for every line item.</p>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span> Install the bookmarklet</h2>
+    <div class="panel">
+      <div class="bookmarklet-row">
+        <a class="bookmarklet" id="bookmarkletLink" href="#" onclick="return false;">🥷 Extract Cart</a>
+        <div class="bookmarklet-hint">
+          <strong>Drag</strong> the green button above into your browser's <strong>bookmarks bar</strong>.
+          (If the bar is hidden: <code>⌘/Ctrl + Shift + B</code> to show it.)
+          Right-clicking the button → "Bookmark this link" also works in most browsers.
+        </div>
+      </div>
+      <div class="callout">
+        <strong>Can't drag?</strong> Some browsers block dragging javascript: links. In that case: create any new bookmark, then edit it and paste the code below into the URL field. Name it <code>Extract Cart</code>.
+        <button class="btn" id="copyCodeBtn" style="margin-top: 12px;">Copy bookmarklet code</button>
+        <div class="code-block" id="codeBlock" style="margin-top:12px;display:none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span> Use it on a cart page</h2>
+    <ol class="steps">
+      <li>Open the customer's cart-share link (the <code>/a/cart?cart-token=...</code> URL) in your browser. This loads their cart into your session.</li>
+      <li>Once the cart page is showing, click the <strong>🥷 Extract Cart</strong> bookmark in your bookmarks bar.</li>
+      <li>A floating panel slides in from the right with each line item's upload URL, width, height, and quantity. Click <strong>Copy CSV</strong> to grab all rows, or copy individual fields.</li>
+      <li>Press <code>Esc</code> or click <strong>×</strong> to close the panel.</li>
+    </ol>
+    <div class="callout">
+      <strong>What it does under the hood:</strong> Fetches <code>/cart.js</code> from the current ninjatransfers.com session (so the cookies authenticate the request), parses the JSON, walks every line item's <code>properties</code> looking for <code>_Upload (Vector Files Preferred)</code>, <code>width</code>, <code>height</code>, and <code>qty</code> (with fuzzy key matching), and renders the results inline. No data leaves the browser.
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span> Manual fallback</h2>
+    <p class="subtitle" style="margin-bottom: 18px;">If you already have JSON in hand (from a support ticket, a copy of <code>/cart.js</code>, etc.), paste it below to run the same extraction without the bookmarklet.</p>
+    <div class="fallback-panel">
+      <div class="fallback-header">
+        <span class="fallback-title">Paste cart JSON</span>
+        <span class="fallback-title" id="charCount">0 chars</span>
+      </div>
+      <textarea id="jsonInput" placeholder='Paste Shopify cart JSON here — or anything containing line items with properties like _Upload (Vector Files Preferred), width, height, qty...'></textarea>
+      <div class="controls">
+        <button class="btn" id="sampleBtn">Load Sample</button>
+        <button class="btn" id="clearBtn">Clear</button>
+        <button class="btn" id="copyAllBtn">Copy All (CSV)</button>
+        <button class="btn-primary" id="extractBtn">Extract →</button>
+      </div>
+      <div class="fallback-results" id="fallback-results"></div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    Bookmarklet runs entirely in your browser. It only touches <code style="background:var(--surface-2);padding:2px 6px;border-radius:2px;color:var(--accent);font-size:0.75rem;">/cart.js</code> on whatever domain you're on (so it won't work from this install page — only from an actual cart page). Internal use only.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- BOOKMARKLET SOURCE                                            -->
+<!-- This is the code that runs when the bookmarklet is clicked.   -->
+<!-- It's compiled to a single-line javascript: URL below.         -->
+<!-- ============================================================ -->
+<script id="bookmarklet-source" type="text/plain">
+(function(){
+  if(window.__ntCartExtractor){window.__ntCartExtractor.refresh();return;}
+  var VECTOR_EXT=['.ai','.eps','.svg','.pdf'];
+  var TOKENS={upload:['upload','vectorfile','artwork','designfile','fileurl','assetfile','asseturl'],width:['width'],height:['height'],qty:['qty','quantity']};
+  var EXACT={upload:['url','file','image','imageurl','asset'],width:['w'],height:['h'],qty:['count','amount','numberofunits']};
+  var LINE_ITEM_KEYS=['lineitems','items','products','orders','order','cart','cartitems','orderitems'];
+  function nk(k){return k.toLowerCase().replace(/[\s_\-()\[\]{}.:/]/g,'');}
+  function matchField(k){var n=nk(k);for(var f in TOKENS){if(EXACT[f].indexOf(n)>-1)return f;for(var i=0;i<TOKENS[f].length;i++)if(n.indexOf(TOKENS[f][i])>-1)return f;}return null;}
+  function walk(node,c){if(node==null)return;if(Array.isArray(node)){node.forEach(function(i){walk(i,c);});return;}if(typeof node==='object'){for(var k in node){var v=node[k];var f=matchField(k);if(f&&v!=null&&typeof v!=='object')c[f].push({key:k,value:v});walk(v,c);}}}
+  function findLineItems(root){var known=[];function sk(n){if(!n||typeof n!=='object')return;if(Array.isArray(n)){n.forEach(sk);return;}for(var k in n){var v=n[k];if(Array.isArray(v)&&LINE_ITEM_KEYS.indexOf(nk(k))>-1&&v.length&&typeof v[0]==='object')known.push(v);sk(v);}}sk(root);if(known.length){return known.reduce(function(a,b){return a.concat(b);},[]);}if(Array.isArray(root)&&root.length&&typeof root[0]==='object')return root;function ds(n){if(!n||typeof n!=='object')return null;if(Array.isArray(n)){if(n.length&&typeof n[0]==='object'){var c={upload:[],width:[],height:[],qty:[]};walk(n[0],c);var h=0;for(var f in c)if(c[f].length)h++;if(h>=2)return n;}for(var i=0;i<n.length;i++){var r=ds(n[i]);if(r)return r;}return null;}for(var k in n){var r=ds(n[k]);if(r)return r;}return null;}var f=ds(root);return f||[root];}
+  function isUrl(v){return typeof v==='string'&&/^https?:\/\//i.test(v);}
+  function isVec(v){if(!isUrl(v))return false;var l=v.toLowerCase().split('?')[0];return VECTOR_EXT.some(function(e){return l.indexOf(e,l.length-e.length)>-1;});}
+  function pickUpload(cs){var u=cs.filter(function(c){return isUrl(c.value);});if(!u.length)return cs.length?cs[0].value:null;var uv=u.filter(function(c){return nk(c.key).indexOf('upload')>-1&&isVec(c.value);})[0];if(uv)return uv.value;var up=u.filter(function(c){return nk(c.key).indexOf('upload')>-1;})[0];if(up)return up.value;var vc=u.filter(function(c){return isVec(c.value);})[0];if(vc)return vc.value;return u[0].value;}
+  function pickNum(cs){for(var i=0;i<cs.length;i++){var v=cs[i].value;if(typeof v==='number')return v;if(typeof v==='string'&&v.trim()!==''&&!isNaN(Number(v)))return Number(v);}return cs.length?cs[0].value:null;}
+  function extractItem(item){var c={upload:[],width:[],height:[],qty:[]};walk(item,c);return{upload:pickUpload(c.upload),width:pickNum(c.width),height:pickNum(c.height),qty:pickNum(c.qty)};}
+  function getTitle(item,fb){if(!item||typeof item!=='object')return fb;var keys=['title','name','product','productname','sku','description'];for(var i=0;i<keys.length;i++){for(var k in item){if(nk(k)===keys[i]&&typeof item[k]==='string'&&item[k].trim())return item[k];}}if(item.id)return'Item '+item.id;return fb;}
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function toCSV(rows){var h=['#','Title','Upload','Width','Height','Quantity'];function e(v){if(v==null)return'';var s=String(v);return/[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}var lines=[h.join(',')];rows.forEach(function(r,i){lines.push([i+1,e(r.title),e(r.upload),e(r.width),e(r.height),e(r.qty)].join(','));});return lines.join('\n');}
+
+  var P=document.createElement('div');P.id='__nt_ext_panel';
+  P.innerHTML='<div id="__nt_ext_inner"></div>';
+  var s=document.createElement('style');
+  s.textContent='#__nt_ext_panel{position:fixed;top:20px;right:20px;width:440px;max-height:90vh;background:#0e0e10;color:#ededf0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;border:1px solid #2a2a33;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,0.5);z-index:2147483647;overflow:hidden;display:flex;flex-direction:column}#__nt_ext_inner{overflow-y:auto;flex:1}#__nt_ext_panel *{box-sizing:border-box}#__nt_ext_panel .h{padding:12px 16px;border-bottom:1px solid #2a2a33;background:#1c1c22;display:flex;align-items:center;gap:10px}#__nt_ext_panel .h .t{flex:1;font-weight:700;color:#d4ff3d;letter-spacing:0.05em;font-size:12px;text-transform:uppercase}#__nt_ext_panel .h button{background:transparent;border:1px solid #2a2a33;color:#8a8a95;padding:4px 10px;font-family:inherit;font-size:11px;cursor:pointer;border-radius:2px;text-transform:uppercase;letter-spacing:0.05em}#__nt_ext_panel .h button:hover{color:#d4ff3d;border-color:#d4ff3d}#__nt_ext_panel .h .x{padding:2px 8px;font-size:14px}#__nt_ext_panel .s{padding:10px 16px;background:#1c1c22;border-bottom:1px solid #2a2a33;font-size:11px;color:#8a8a95}#__nt_ext_panel .s b{color:#d4ff3d;font-size:13px}#__nt_ext_panel .it{border-bottom:1px solid #2a2a33}#__nt_ext_panel .it:last-child{border-bottom:none}#__nt_ext_panel .ih{padding:8px 16px;background:#1c1c22;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2a2a33}#__nt_ext_panel .ih .n{color:#d4ff3d;font-weight:700;font-size:14px}#__nt_ext_panel .ih .ti{flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#__nt_ext_panel .ih .st{font-size:10px;padding:2px 6px;border:1px solid #2a2a33;border-radius:2px;color:#8a8a95;text-transform:uppercase;letter-spacing:0.05em}#__nt_ext_panel .ih .st.ok{color:#5cffaa;border-color:#5cffaa}#__nt_ext_panel .ih .st.pt{color:#d4ff3d;border-color:#6b7d1f}#__nt_ext_panel .ih .st.no{color:#ff5c5c;border-color:#ff5c5c}#__nt_ext_panel .f{padding:8px 16px;display:grid;grid-template-columns:80px 1fr;gap:10px;border-bottom:1px solid #2a2a33;font-size:12px}#__nt_ext_panel .it .f:last-child{border-bottom:none}#__nt_ext_panel .fl{color:#8a8a95;text-transform:uppercase;font-size:10px;letter-spacing:0.08em;padding-top:1px}#__nt_ext_panel .fv{word-break:break-all;line-height:1.5}#__nt_ext_panel .fv.em{color:#ff5c5c;font-style:italic;opacity:0.7}#__nt_ext_panel .fv a{color:#d4ff3d;text-decoration:none;border-bottom:1px dashed #6b7d1f}#__nt_ext_panel .cb{background:transparent;border:1px solid #2a2a33;color:#8a8a95;padding:2px 6px;font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;margin-top:4px;text-transform:uppercase;letter-spacing:0.05em}#__nt_ext_panel .cb:hover{color:#d4ff3d;border-color:#d4ff3d}#__nt_ext_panel .cb.cp{color:#5cffaa;border-color:#5cffaa}#__nt_ext_panel .er{padding:24px 18px;color:#ff5c5c;font-size:12px;line-height:1.6}#__nt_ext_panel .ld{padding:24px 18px;color:#8a8a95;font-size:12px}';
+  document.head.appendChild(s);document.body.appendChild(P);
+
+  var inner=P.querySelector('#__nt_ext_inner');
+  function close(){P.remove();s.remove();delete window.__ntCartExtractor;document.removeEventListener('keydown',keyHandler);}
+  function keyHandler(e){if(e.key==='Escape')close();}
+  document.addEventListener('keydown',keyHandler);
+
+  function header(count,found,total){
+    return '<div class="h"><span class="t">🥷 Cart Extract</span><button class="rf">Refresh</button><button class="cp">Copy CSV</button><button class="x">×</button></div>'+
+    (count!=null?'<div class="s"><b>'+count+'</b> line item'+(count===1?'':'s')+' · '+found+'/'+total+' fields</div>':'');
+  }
+  function bindHeader(items){
+    inner.querySelector('.x').onclick=close;
+    inner.querySelector('.rf').onclick=function(){render('<div class="ld">Refreshing…</div>');fetchAndRender();};
+    var cp=inner.querySelector('.cp');
+    cp.onclick=function(){if(!items||!items.length)return;navigator.clipboard.writeText(toCSV(items));cp.textContent='Copied ✓';cp.classList.add('cp');setTimeout(function(){cp.textContent='Copy CSV';cp.classList.remove('cp');},1400);};
+  }
+  function render(html){inner.innerHTML=html;}
+  function renderItems(items){
+    if(!items.length){render(header()+'<div class="er">No line items found in the cart.</div>');bindHeader([]);return;}
+    var found=items.reduce(function(a,it){return a+[it.upload,it.width,it.height,it.qty].filter(function(v){return v!=null&&v!=='';}).length;},0);
+    var total=items.length*4;
+    var html=header(items.length,found,total);
+    items.forEach(function(it,idx){
+      var f=[it.upload,it.width,it.height,it.qty].filter(function(v){return v!=null&&v!=='';}).length;
+      var cls=f===4?'ok':f===0?'no':'pt';
+      html+='<div class="it"><div class="ih"><span class="n">'+(idx+1)+'</span><span class="ti">'+esc(it.title||'Item '+(idx+1))+'</span><span class="st '+cls+'">'+f+'/4</span></div>';
+      html+=fieldHTML('Upload',it.upload,true);
+      html+=fieldHTML('Width',it.width);
+      html+=fieldHTML('Height',it.height);
+      html+=fieldHTML('Qty',it.qty);
+      html+='</div>';
+    });
+    render(html);
+    bindHeader(items);
+    inner.querySelectorAll('.cb').forEach(function(btn){
+      btn.onclick=function(){var v=btn.getAttribute('data-v');navigator.clipboard.writeText(v);var o=btn.textContent;btn.textContent='✓';btn.classList.add('cp');setTimeout(function(){btn.textContent=o;btn.classList.remove('cp');},1200);};
+    });
+  }
+  function fieldHTML(label,val,isUrl){
+    if(val==null||val===''){return '<div class="f"><div class="fl">'+label+'</div><div class="fv em">Not found</div></div>';}
+    var html='<div class="f"><div class="fl">'+label+'</div><div class="fv">';
+    if(isUrl&&typeof val==='string'&&/^https?:\/\//.test(val)){html+='<a href="'+esc(val)+'" target="_blank" rel="noopener">'+esc(val)+'</a>';}
+    else{html+=esc(val);}
+    html+='<br><button class="cb" data-v="'+esc(val).replace(/"/g,'&quot;')+'">Copy</button>';
+    html+='</div></div>';
+    return html;
+  }
+
+  function fetchAndRender(){
+    fetch('/cart.js',{credentials:'same-origin',headers:{'Accept':'application/json'}}).then(function(r){
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      return r.json();
+    }).then(function(cart){
+      var lineItems=findLineItems(cart);
+      var results=lineItems.map(function(it,i){var ex=extractItem(it);ex.title=getTitle(it,'Item '+(i+1));return ex;});
+      renderItems(results);
+    }).catch(function(err){
+      render(header()+'<div class="er"><b>Could not fetch /cart.js</b><br><br>'+esc(err.message)+'<br><br>Make sure you are on a Shopify storefront page (e.g. <code>ninjatransfers.com/cart</code> or the cart-share URL).</div>');
+      bindHeader([]);
+    });
+  }
+
+  window.__ntCartExtractor={refresh:fetchAndRender,close:close};
+  render('<div class="ld">🥷 Fetching cart from this page…</div>');
+  fetchAndRender();
+})();
+</script>
+
+<!-- ============================================================ -->
+<!-- INSTALL PAGE LOGIC                                            -->
+<!-- Compiles the bookmarklet source into a javascript: URL and    -->
+<!-- powers the manual paste fallback.                             -->
+<!-- ============================================================ -->
+<script>
+// Build the bookmarklet href from the source block.
+(function buildBookmarklet(){
+  var src = document.getElementById('bookmarklet-source').textContent;
+  // Collapse whitespace while preserving string contents-ish; this is a simple safe minify
+  // (multi-line newlines → single space, then collapse runs of spaces).
+  var minified = src.replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
+  var href = 'javascript:' + encodeURIComponent(minified);
+  document.getElementById('bookmarkletLink').setAttribute('href', href);
+  document.getElementById('codeBlock').textContent = href;
+
+  document.getElementById('copyCodeBtn').addEventListener('click', function(){
+    document.getElementById('codeBlock').style.display = 'block';
+    navigator.clipboard.writeText(href).then(function(){
+      var btn = document.getElementById('copyCodeBtn');
+      btn.textContent = 'Copied ✓ — now paste into a new bookmark';
+      btn.classList.add('copied');
+      setTimeout(function(){
+        btn.textContent = 'Copy bookmarklet code';
+        btn.classList.remove('copied');
+      }, 2400);
+    });
+  });
+})();
+
+// =============== Manual fallback extractor (same logic) ==================
+var VECTOR_EXT = ['.ai','.eps','.svg','.pdf'];
+var TOKENS = { upload: ['upload','vectorfile','artwork','designfile','fileurl','assetfile','asseturl'], width: ['width'], height: ['height'], qty: ['qty','quantity'] };
+var EXACT  = { upload: ['url','file','image','imageurl','asset'], width: ['w'], height: ['h'], qty: ['count','amount','numberofunits'] };
+var LINE_ITEM_KEYS = ['lineitems','items','products','orders','order','cart','cartitems','orderitems'];
+
+function nk(k){ return k.toLowerCase().replace(/[\s_\-()\[\]{}.:/]/g, ''); }
+function matchField(rk){ var n=nk(rk); for(var f in TOKENS){ if(EXACT[f].indexOf(n)>-1) return f; for(var i=0;i<TOKENS[f].length;i++) if(n.indexOf(TOKENS[f][i])>-1) return f; } return null; }
+function walk(node, c){ if(node==null) return; if(Array.isArray(node)){ node.forEach(function(i){ walk(i, c); }); return; } if(typeof node==='object'){ for(var k in node){ var v=node[k]; var f=matchField(k); if(f && v!=null && typeof v!=='object') c[f].push({key:k,value:v}); walk(v,c); } } }
+function findLineItems(root){
+  var known=[]; function sk(n){ if(!n||typeof n!=='object') return; if(Array.isArray(n)){ n.forEach(sk); return; } for(var k in n){ var v=n[k]; if(Array.isArray(v) && LINE_ITEM_KEYS.indexOf(nk(k))>-1 && v.length && typeof v[0]==='object') known.push(v); sk(v); } }
+  sk(root); if(known.length) return known.reduce(function(a,b){return a.concat(b);},[]);
+  if(Array.isArray(root) && root.length && typeof root[0]==='object') return root;
+  function ds(n){ if(!n||typeof n!=='object') return null; if(Array.isArray(n)){ if(n.length && typeof n[0]==='object'){ var c={upload:[],width:[],height:[],qty:[]}; walk(n[0], c); var h=0; for(var f in c) if(c[f].length) h++; if(h>=2) return n; } for(var i=0;i<n.length;i++){ var r=ds(n[i]); if(r) return r; } return null; } for(var k in n){ var r=ds(n[k]); if(r) return r; } return null; }
+  var f=ds(root); return f || [root];
+}
+function isUrl(v){ return typeof v==='string' && /^https?:\/\//i.test(v); }
+function isVec(v){ if(!isUrl(v)) return false; var l=v.toLowerCase().split('?')[0]; return VECTOR_EXT.some(function(e){ return l.indexOf(e, l.length - e.length) > -1; }); }
+function pickUpload(cs){ var u=cs.filter(function(c){return isUrl(c.value);}); if(!u.length) return cs.length?cs[0].value:null; var uv=u.filter(function(c){return nk(c.key).indexOf('upload')>-1 && isVec(c.value);})[0]; if(uv) return uv.value; var up=u.filter(function(c){return nk(c.key).indexOf('upload')>-1;})[0]; if(up) return up.value; var vc=u.filter(function(c){return isVec(c.value);})[0]; if(vc) return vc.value; return u[0].value; }
+function pickNum(cs){ for(var i=0;i<cs.length;i++){ var v=cs[i].value; if(typeof v==='number') return v; if(typeof v==='string' && v.trim()!=='' && !isNaN(Number(v))) return Number(v); } return cs.length?cs[0].value:null; }
+function extractItem(item){ var c={upload:[],width:[],height:[],qty:[]}; walk(item, c); return { upload: pickUpload(c.upload), width: pickNum(c.width), height: pickNum(c.height), qty: pickNum(c.qty) }; }
+function getTitle(item, fb){ if(!item||typeof item!=='object') return fb; var keys=['title','name','product','productname','sku','description']; for(var i=0;i<keys.length;i++){ for(var k in item){ if(nk(k)===keys[i] && typeof item[k]==='string' && item[k].trim()) return item[k]; } } if(item.id) return 'Item '+item.id; return fb; }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function toCSV(rows){ var h=['#','Title','Upload','Width','Height','Quantity']; function e(v){ if(v==null) return ''; var s=String(v); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; } var lines=[h.join(',')]; rows.forEach(function(r,i){ lines.push([i+1, e(r.title), e(r.upload), e(r.width), e(r.height), e(r.qty)].join(',')); }); return lines.join('\n'); }
+
+var lastResults = [];
+function renderFallback(items){
+  var out = document.getElementById('fallback-results');
+  out.innerHTML = '';
+  if(!items.length){ out.classList.remove('has-items'); return; }
+  out.classList.add('has-items');
+  items.forEach(function(it, idx){
+    var card = document.createElement('div'); card.className = 'item-card';
+    var found = [it.upload, it.width, it.height, it.qty].filter(function(v){ return v!=null && v!==''; }).length;
+    var cls = found===4 ? 'success' : found===0 ? 'fail' : 'partial';
+    card.innerHTML = '<div class="item-head"><span class="item-num">'+(idx+1)+'</span><span class="item-title">'+esc(it.title||'Item '+(idx+1))+'</span><span class="item-status '+cls+'">'+found+'/4</span></div>';
+    card.appendChild(makeFieldRow('Upload', it.upload, true));
+    card.appendChild(makeFieldRow('Width', it.width));
+    card.appendChild(makeFieldRow('Height', it.height));
+    card.appendChild(makeFieldRow('Qty', it.qty));
+    out.appendChild(card);
+  });
+}
+function makeFieldRow(label, val, isUrlField){
+  var row = document.createElement('div'); row.className = 'field';
+  var lab = document.createElement('div'); lab.className = 'field-label'; lab.textContent = label;
+  var v = document.createElement('div');
+  if(val==null || val===''){ v.className = 'field-value empty'; v.textContent = 'Not found'; }
+  else { v.className = 'field-value' + (isUrlField ? ' url' : ''); if(isUrlField && isUrl(val)) v.innerHTML = '<a href="'+esc(val)+'" target="_blank" rel="noopener">'+esc(val)+'</a>'; else v.textContent = String(val); }
+  row.appendChild(lab); row.appendChild(v); return row;
+}
+function doExtract(){
+  var raw = document.getElementById('jsonInput').value.trim();
+  if(!raw){ lastResults=[]; renderFallback([]); return; }
+  var data; try { data = JSON.parse(raw); } catch(err){ lastResults=[]; document.getElementById('fallback-results').innerHTML = '<div style="padding:18px;color:var(--danger);font-size:0.78rem;">Invalid JSON: '+esc(err.message)+'</div>'; document.getElementById('fallback-results').classList.add('has-items'); return; }
+  var items = findLineItems(data).map(function(it, i){ var ex = extractItem(it); ex.title = getTitle(it, 'Item '+(i+1)); return ex; });
+  lastResults = items;
+  renderFallback(items);
+}
+document.getElementById('extractBtn').addEventListener('click', doExtract);
+document.getElementById('clearBtn').addEventListener('click', function(){ document.getElementById('jsonInput').value=''; document.getElementById('charCount').textContent='0 chars'; lastResults=[]; renderFallback([]); });
+document.getElementById('sampleBtn').addEventListener('click', function(){
+  var sample = JSON.stringify({
+    token: "1muFsy",
+    item_count: 2,
+    items: [
+      { id: 40497587716179, title: "Custom Patch — Cap 2026",
+        properties: { "_Upload (Vector Files Preferred)": "https://ninja-services-production-ninjauploadss3bucket-zks2mguobhe4.s3.amazonaws.com/Ninja-Transfers04c8e822ee4a4fe092628f5403c3c6d9CAP-2026-new57____image_1779211889635_149.png", "_Terms Accepted": "Yes", "width": 1.88, "height": 1.11, "qty": 100 } },
+      { id: 40497587716180, title: "Impulse 2 Case Sticker",
+        properties: { "_Upload (Vector Files Preferred)": "https://ninja-services-production-ninjauploadss3bucket-zks2mguobhe4.s3.amazonaws.com/impulse-2-case-sticker____image_1778864681494_36.ai", "width": 3.5, "height": 2.0, "qty": 250 } }
+    ]
+  }, null, 2);
+  document.getElementById('jsonInput').value = sample;
+  document.getElementById('charCount').textContent = sample.length + ' chars';
+  doExtract();
+});
+document.getElementById('copyAllBtn').addEventListener('click', function(){
+  if(!lastResults.length) return;
+  navigator.clipboard.writeText(toCSV(lastResults));
+  var btn = document.getElementById('copyAllBtn');
+  btn.textContent = 'Copied ✓';
+  setTimeout(function(){ btn.textContent = 'Copy All (CSV)'; }, 1400);
+});
+document.getElementById('jsonInput').addEventListener('input', function(e){ document.getElementById('charCount').textContent = e.target.value.length + ' chars'; });
+document.getElementById('jsonInput').addEventListener('keydown', function(e){ if((e.metaKey||e.ctrlKey) && e.key==='Enter'){ e.preventDefault(); doExtract(); } });
+</script>
+</body>
+</html>
